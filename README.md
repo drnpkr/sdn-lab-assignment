@@ -1,6 +1,6 @@
 # SDN Lab Assignment
 
-**Disclaimer:** This Lab Assignment was part of the NWEN302 Course (Computer Network Design) at the [School of Engineering and Computer Science](https://www.victoria.ac.nz/ecs), Victoria University of Wellington, New Zealand.
+This Lab Assignment was part of the NWEN302 Course (Computer Network Design) at the [School of Engineering and Computer Science](https://www.victoria.ac.nz/ecs), Victoria University of Wellington, New Zealand.
 
 **Assignment Objectives:** Setup and configure a network of SDN-enabled devices; operate the network and compare with traditional IP network.
 
