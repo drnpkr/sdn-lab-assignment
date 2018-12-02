@@ -1,38 +1,29 @@
-# sdn-lab-assignment
-
----+ %COURSENAME% - %SPACEOUT{ "%TOPIC%" }%:
----++!! %COURSE_CODE%: %COURSEYEAR% Trimester %COURSETRIMESTER_NUMBER%
-
-| *Assigned:* | %LAB4_STR% |
-| *Due:* | %LAB4_DUE% - %RED% *SUBMISSION OF REASONABLE ATTEMPTS FOR ALL TASKS ARE MANDATORY* %ENDCOLOR% |
-| *Value:* | 10% |
-
----++ Introduction
+++ Introduction
 
 SDN is a new approach to the current world of networking, in this lab you will learn basic concepts of SDN through OpenFlow. OpenFlow started with several engineers from Stanford University creating a protocol that would have a logically centralised control plane separated from the underlying switching details. OpenFlow was architected for a number of devices containing only data planes to respond to commands sent to them from a logically centralised controller that housed the single control plane for that network. The controller is responsible for maintaining all of the network paths, as well as programming each of the network devices it controlled. The commands and responses to those commands are described in the OpenFlow protocol.
 
----++ Background reading
+++ Background reading
 
 Before starting this lab, read up on the technologies you will be using:
 
-   1 Get familiar with the SDN emulation environment, [[http://mininet.org/walkthrough/][Mininet]]. (30 minutes – 1 hour)
-   1 Refresh your Python programming skills using the [[http://docs.python.org/tutorial/][Python Tutorial]]. (1 hour +)
-   1 Study the [[%ATTACHURL%/RYU-Controller-Tutorial.pdf][RYU Controller Tutorial]]. (~ 2 hours)
-      * [[%ATTACHURL%/Pseudo-code.pdf][Pseudo-code.pdf]]
-      * [[%ATTACHURL%/Useful-mininet-setups.pdf][Useful-mininet-setups.pdf]]
-      * Note that sdnhub.org is not operable. All these documents have been fetched from web archive.
+   1 Get familiar with the SDN emulation environment, [Mininet](http://mininet.org/walkthrough/). (30 minutes – 1 hour)
+   1 Refresh your Python programming skills using the [Python Tutorial](http://docs.python.org/tutorial/). (1+ hour )
+   1 Study the [RYU Controller Tutorial](attachments/RYU-Controller-Tutorial.pdf). (~ 2 hours)
+      * [Pseudo-code.pdf](attachments/Pseudo-code.pdf)
+      * [Useful-mininet-setups.pdf](attachments/Useful-mininet-setups.pdf)
+      * **Note that sdnhub.org is not operable. All these documents have been fetched from web archive.**
 
----++ Laboratory environment
+++ Laboratory environment
 
 In this lab, you will start by learning the basics of running Mininet in a VirtualBox virtual machine. Mininet facilitates creating and manipulating Software Defined Networking components.
 
 Through Mininet you will explore OpenFlow, which is an open interface for controlling the network elements through their forwarding tables. A network element may be converted into a switch, router or even an access points via low-level primitives defined in OpenFlow. This lab is your opportunity to gain hands-on experience with the platforms and debugging tools most useful for developing network control applications on OpenFlow.
 
-To configure and install your own copy of the VirtualBox appliance (virtual machine) follow [[%ATTACHURL%/import-ova.pdf][these instructions]].
+To configure and install your own copy of the VirtualBox appliance (virtual machine) follow [these instructions](attachments/import-ova.pdf).
 
 <!--
 
-If you have troubles with ssh to guest VM from host machine, the followings can help:
+If you have troubles with ssh to guest VM from host machine, the following can help:
 
    1 Add host-only network. In =File Menu->Preferences->Network= click on the "Host-only Networks" tab and than add a new host-only network (with default settings) by clicking on the =+= icon (you may already have a network called =vboxnet0=, in such a case you can skip this step).
    1 Select your VM and go to the Settings tab. Go to Network->Adapter 1. Select the "Enable Adapter" box and attach it to "Host-only network" created at the step 1.
@@ -43,7 +34,7 @@ Once imported, the user name is =nwen302= with a password of =nwen302=.
 
 Important directories include:
 
-<verbatim>
+```bash
 /usr/local/lib/python2.7/dist-packages/ryu                                                 
                                           /app     
                                           /base
@@ -53,21 +44,21 @@ Important directories include:
                                           /ofproto
                                           /....
                                           /topology
-</verbatim>
+```
 
-=app= : A set of applications that run on-top of the controller.
+`app` : A set of applications that run on-top of the controller.
 
-=base= : Contains the base class for RYU applications. The RyuApp class in the app_manager.py file is inherited when creating a new application.
+`base` : Contains the base class for RYU applications. The RyuApp class in the app_manager.py file is inherited when creating a new application.
 
-=controller= : The required set of files to handle OpenFlow functions (e.g., packets from switches, generating flows, handling network events, gathering statistics etc).
+`controller` : The required set of files to handle OpenFlow functions (e.g., packets from switches, generating flows, handling network events, gathering statistics etc).
 
-=lib= : Packet libraries to parse different protocol headers and a library for OFConfig. In addition, it includes parsers for Netflow and sFlow too.
+`lib` : Packet libraries to parse different protocol headers and a library for OFConfig. In addition, it includes parsers for Netflow and sFlow too.
 
-=ofproto= : OpenFlow protocol specific information and related parsers to support different versions of OF protocol (1.0, 1.2, 1.3, 1.4)
+`ofproto` : OpenFlow protocol specific information and related parsers to support different versions of OF protocol (1.0, 1.2, 1.3, 1.4)
 
-=topology= : Code that performs topology discovery related to OpenFlow switches and handles associated information (e.g., ports, links etc). Internally uses LLDP protocol.
+`topology` : Code that performs topology discovery related to OpenFlow switches and handles associated information (e.g., ports, links etc). Internally uses LLDP protocol.
 
----+++ Network topology
++++ Network topology
 
 The topology has three hosts named h1, h2 and h3 respectively. Each host has an Ethernet interface called h1-eth0, h2-eth0 and h3-eth0 respectively. The three hosts are connected through a switch named s1.
 
@@ -75,103 +66,104 @@ The switch s1 has three ports named s1-eth1, s1-eth2 and s1-eth3. The controller
 
 The controller is identified as c0 and connected through port 6653.
 
-<img alt='Lab4.Topology.png' src='%ATTACHURL%/Lab4.Topology.png' align='center' title='Lab4.Topology.png' />
+<img alt='Lab4.Topology.png' src='attachments/Lab4.Topology.png' align='center' title='Lab4.Topology.png' />
 
----+++ Creating a test emulated network
++++ Creating a test emulated network
 
-%RED% Before we start, please note the following: %ENDCOLOR%
+**Before we start, please note the following:**
 
-   : <b>$</b> preceeds Linux commands that should be typed at the shell prompt (as user nwen302),
-   : <b>mininet></b> preceeds Mininet commands that should be typed at Mininet’s CLI,
-   : <b>#</b> preceeds Linux commands that are typed at a root shell prompt.
+   : **$** preceeds Linux commands that should be typed at the shell prompt (as user nwen302),
+   : **mininet>** preceeds Mininet commands that should be typed at Mininet’s CLI,
+   : **#** preceeds Linux commands that are typed at a root shell prompt.
 
 1. In the Virtual Machine, create the network with the following command:
 
-<verbatim>
+```bash
 $ sudo mn --topo=single,3 --mac
-</verbatim>
+```
 
 Note that since we are not providing here an external controller, mininet will create its own.
 
 2. To verify that the network was successfully created, within the mininet prompt:
 
-<verbatim>
+```bash
 mininet> net
 mininet> dump
-</verbatim>
+```
 
 You should be able to determine from the output if the network is indeed as in the topology diagram as shown above.
 
----++++ Accessing each host
+++++ Accessing each host
 
 1. To check the network interfaces on h1
 
-<verbatim>
+```bash
 mininet> h1 ifconfig
-</verbatim>
+```
 
 2. To ping another host from h1
 
-<verbatim>
+```bash
 mininet> h1 ping h3
 mininet> h2 ping h1
-</verbatim>
+```
 
 3. To ping all hosts from all hosts
 
-<verbatim>
+```bash
 mininet> pingall
-</verbatim>
+```
 
-
----++++ Housekeeping in mininet
+++++ Housekeeping in mininet
 
 To exit and clear devices
 
-<verbatim>
+```bash
 mininet> exit
 $ sudo mn -c
-</verbatim>
+```
 
----+++ Creating the emulated network for the Lab - Connecting to Ryu Controller
++++ Creating the emulated network for the Lab - Connecting to Ryu Controller
 
 To ensure that no other controller is present:
 
-<!--
-<verbatim>
-$ sudo killall controller
-</verbatim>
-
-Note that this controller is a simple OpenFlow reference controller implementation in linux.
--->
+//<!--
+//<verbatim>
+//$ sudo killall controller
+//</verbatim>
+//
+//Note that this controller is a simple OpenFlow reference controller implementation in linux.
+//-->
 
 In a new terminal session, start the Ryu controller:
 
-<verbatim>
+```bash
 $ sudo ryu run /usr/local/lib/python2.7/dist-packages/ryu/app/simple_switch_13.py
-</verbatim>
+```
 
 Alternatively, you can also start the controller using ryu-manager:
 
-<verbatim>
+```bash
 $ sudo ryu-manager /usr/local/lib/python2.7/dist-packages/ryu/app/simple_switch_13.py
-</verbatim>
+```
 
 To get more detailed notifications about the controller stat you can add the =--verbose= option:
 
-<verbatim>
+```bash
 $ sudo ryu run /usr/local/lib/python2.7/dist-packages/ryu/app/simple_switch_13.py --verbose
-</verbatim>
+```
 
 Clear all mininet components
 
-<verbatim>$ sudo mn -c</verbatim>
+```bash
+$ sudo mn -c
+```
 
 Start mininet with remote controller:
 
-<verbatim>
+```bash
 $ sudo mn --controller=remote --topo=single,3 --switch=ovsk,protocols=OpenFlow13 --mac
-</verbatim>
+```
 
 With the optional argument =--controller=remote=, it defaults to =localhost:6653=. By the option =--switch=ovsk,protocols=OpenFlow13= we tell Mininet to use OpenFlow version 1.3. =--mac= will tell Mininet to create hosts with easily readable MAC addresses.
 
