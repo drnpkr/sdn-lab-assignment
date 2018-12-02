@@ -4,6 +4,8 @@ This Lab Assignment was part of the NWEN302 Course (Computer Network Design) at 
 
 **Assignment Objectives:** Setup and configure a network of SDN-enabled devices; operate the network and compare with traditional IP network.
 
+**Last updated: December 2018**
+
 ## Introduction
 ---
 
@@ -138,9 +140,10 @@ $ sudo mn -c
 ### Creating the emulated network for the Lab - Connecting to Ryu Controller
 ---
 
+<!--
+
 To ensure that no other controller is present:
 
-<!--
 <verbatim>
 $ sudo killall controller
 </verbatim>
