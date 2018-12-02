@@ -76,10 +76,9 @@ The controller is identified as c0 and connected through port 6653.
 ---
 
 **Before we start, please note the following:**
-
-   : **$** preceeds Linux commands that should be typed at the shell prompt (as user nwen302),
-   : **mininet>** preceeds Mininet commands that should be typed at Mininet’s CLI,
-   : **#** preceeds Linux commands that are typed at a root shell prompt.
+   **$** preceeds Linux commands that should be typed at the shell prompt (as user nwen302),
+   **mininet>** preceeds Mininet commands that should be typed at Mininet’s CLI,
+   **#** preceeds Linux commands that are typed at a root shell prompt.
 
 1. In the Virtual Machine, create the network with the following command:
 
@@ -135,13 +134,13 @@ $ sudo mn -c
 
 To ensure that no other controller is present:
 
-//<!--
-//<verbatim>
-//$ sudo killall controller
-//</verbatim>
-//
-//Note that this controller is a simple OpenFlow reference controller implementation in linux.
-//-->
+<!--
+<verbatim>
+$ sudo killall controller
+</verbatim>
+
+Note that this controller is a simple OpenFlow reference controller implementation in linux.
+-->
 
 In a new terminal session, start the Ryu controller:
 
@@ -175,100 +174,105 @@ $ sudo mn --controller=remote --topo=single,3 --switch=ovsk,protocols=OpenFlow13
 
 With the optional argument =--controller=remote=, it defaults to =localhost:6653=. By the option =--switch=ovsk,protocols=OpenFlow13= we tell Mininet to use OpenFlow version 1.3. =--mac= will tell Mininet to create hosts with easily readable MAC addresses.
 
----+++ All about flows
+### All about flows
 ---
 
 A flow is the finest grained work unit of a switch.
 
 In your VM emulated network environment there is a number of utilities enabling visibility into the network, its hosts, network devices and their flow tables. They can be especially useful for debugging by viewing flow state and flow counters. 
 
-Assuming you have already created an emulated network and connected it to a Ryu controller (as showed in previous section), in a separate terminal window (e.g. using =screen= or another =ssh= session) you can run the following commands.
+Assuming you have already created an emulated network and connected it to a Ryu controller (as showed in previous section), in a separate terminal window (e.g. using =screen= or another `ssh` session) you can run the following commands.
 
 To print a brief overview of the database contents (information about all the virtual switches):
 
-<verbatim>
+```bash
 $ sudo ovs-vsctl show
-</verbatim>
+```
 
-To see more options for command =ovs-vsctl=:
+To see more options for command `ovs-vsctl`:
 
-<verbatim>
+```bash
 $ man ovs-vsctl
-</verbatim>
+```
 
-To print to the console information on =switch number 1=, including information on its flow tables and ports:
+To print to the console information on `switch number 1`, including information on its flow tables and ports:
 
-<verbatim>
+```bash
 $ sudo ovs-ofctl -O OpenFlow13 show s1
-</verbatim>
+```
 
-To prints to the console statistics for network devices associated with =switch number 1=:
+To prints to the console statistics for network devices associated with `switch number 1`:
 
-<verbatim>
+```bash
 $ sudo ovs-ofctl -O OpenFlow13 dump-ports s1
-</verbatim>
+```
 
-To print to the console all flow entries in tables of =switch number 1=:
+To print to the console all flow entries in tables of `switch number 1`:
 
-<verbatim>
+```bash
 $ sudo ovs-ofctl -O OpenFlow13 dump-flows s1
-</verbatim>
+```
 
-To see more options for command =ovs-ofctl=:
+To see more options for command `ovs-ofctl`:
 
-<verbatim>
+```bash
 $ man ovs-ofctl
-</verbatim>
+```
 
----+++ Developing RYU applications
+### Developing RYU applications
 
 Ryu is written fully in python script. To develop your own aplication you can start with opening related files in the =.../ryu/app= folder with your favorite editor (which is vi) and edit them. Do not forget to restart ryu after making any changes.
 
 To get some ideas about developing applications you can start with [[http://ryu.readthedocs.io/en/latest/writing_ryu_app.html][this tutorial]].
 
----++++ Packets with the RYU packet library
+#### Packets with the RYU packet library
+---
 
-Ryu also includes [[http://ryu.readthedocs.io/en/latest/library_packet.html][packet parser library]] <u>which may come in handy when working on the TASKS</u>.
+Ryu also includes [packet parser library](http://ryu.readthedocs.io/en/latest/library_packet.html) **which may come in handy when working on the TASKS**.
 
----+++ The simple_switch_13.py file
+### The simple_switch_13.py file
+---
 
 The *simple_switch_13.py* file is located in your virtual machine in the following folder:
 
-<verbatim>
+```bash
 /usr/local/lib/python2.7/dist-packages/ryu/app
-</verbatim>
+```
 
 Assuming you want to edit this file using your favorite text editor (definitely vi), you would enter
 
-<verbatim>
+```bash
 $ sudo vi /usr/local/lib/python2.7/dist-packages/ryu/app/simple_switch_13.py
-</verbatim>
+```
 
 Alternatively, you can also make a copy of this file to your home directory and link this copy to the controller
 
-<verbatim>
+```bash
 $ cd
 $ cp /usr/local/lib/python2.7/dist-packages/ryu/app/simple_switch_13.py ~/sw.py
 $ sudo ryu-manager sw.py
-</verbatim>
+```
 
-%RED% Keep track of which copy of the *simple_switch_13.py* you are editing since this is one of the files you will have to hand in. %ENDCOLOR%
+**Keep track of which copy of the *simple_switch_13.py* you are editing since this is one of the files you will have to hand in.**
 
-*NOTE* 
+**NOTE** 
 
-All the files in the =ryu= folder are created by the =root= user. When you make a copy with =sudo=, the owner will remain the =root= user. In this case, the copy cannot be edited by the user =nwen302=. It is better to change the file owner with the following command:
+All the files in the =ryu= folder are created by the `root` user. When you make a copy with `sudo`, the owner will remain the `root` user. In this case, the copy cannot be edited by the user `nwen302`. It is better to change the file owner with the following command:
 
-<verbatim>$sudo chown nwen302:nwen302 sw.py</verbatim>
+```bash
+$sudo chown nwen302:nwen302 sw.py
+```
 
 But keep in mind that you will still need to run Ryu and Mininet using sudo.
 
----+++ Understanding simple_switch_13.py
+### Understanding simple_switch_13.py
+---
 
 The simple switch keeps track of where the host with each MAC address is located and accordingly sends packets towards the destination and not flood all ports.
 
 Packet logic:
 
-<verbatim>
+```bash
 Create a table called mac_to_port;
 if { packet_in to switch }  {    
     Parse packet to reveal src and dst MAC addr;
@@ -282,25 +286,28 @@ if { packet_in to switch }  {
      } else { 
          flood all ports != in_port;
     }
-}</verbatim>
+}
+```
 
-This logic might be familiar for you from [[https://ecs.victoria.ac.nz/Courses/NWEN302_2017T2/Lab2#Part_40b_41_45_Learning_Switch][Lab 2 Part B]]. Similarly as in that Lab, here you are also going to work with a *learning switch*. 
+A more detailed description of the *simple_switch_13.py* file can be found in the [RYU SDN FRAMEWORK for OpenFlow 1.3](https://osrg.github.io/ryu-book/en/Ryubook.pdf), in *Chapter 4*. 
 
-A more detailed description of the <b>simple_switch_13.py</b> file can be found in the [[https://osrg.github.io/ryu-book/en/Ryubook.pdf][RYU SDN FRAMEWORK for OpenFlow 1.3]], in *Chapter 4*. 
+## Requirements
+---
 
----++ Requirements
+### Key Task 1
+---
 
----+++ Key Task 1
+Modify `simple_switch_13.py` to include logic to block traffic between host 2 and host 3.
 
-Modify =simple_switch_13.py= to include logic to block traffic between host 2 and host 3.
+### Key Task 2
+---
 
----+++ Key Task 2
+Extend `simple_switch_13.py` to count all traffic going to and originating from host 1.
 
-Extend =simple_switch_13.py= to count all traffic going to and originating from host 1.
+### Key Task 3
+---
 
----+++ Key Task 3
-
-Extend =simple_switch_13.py= to combine Task 1 and Task 2 functionalities. Keep track of all traffic (count the number of packets) originating from each host. If the counter exceeds a specific number, block all the traffic originating from this host for 24 hours. The maximum packet count number should be configured through =MAX_COUNT= variable.
+Extend `simple_switch_13.py` to combine Task 1 and Task 2 functionalities. Keep track of all traffic (count the number of packets) originating from each host. If the counter exceeds a specific number, block all the traffic originating from this host for 24 hours. The maximum packet count number should be configured through `MAX_COUNT` variable.
 
 <!--
 Create a rule in =simple_switch_13.py= that routes messages to the controller for topology maintenance.
@@ -312,36 +319,38 @@ Please see the attachment "Topology_Discovery_with_Ryu.pdf" for more information
 -->
 
 
----++ What to hand in
+## What to hand in
+---
 
    * All relevant code. i.e. the modified *simple_switch_13.py* (if you haven't changed its name) and whatever new Python files you've created.
-      * If you have "borrowed" code from on-line resources and/or other sources, say so in your code comments.
+         *   If you have "borrowed" code from on-line resources and/or other sources, say so in your code comments.
    * A report (max 2,000 words, pictures are always good) describing your development process.
-      * State which of the three tasks listed above you believe you have successfully implemented.
-      * Reflect on what you found easy, what caused you problems and how you overcame those issues.
-      * If you believe you have a particularly sophisticated or original implementation, state why you think this is the case.
-      * Carefully document all investigatory steps taken. If you found several ways to do something, stare why you chose the one you used.
-      * Take care to document all testing steps take.
+         *   State which of the three tasks listed above you believe you have successfully implemented.
+         *   Reflect on what you found easy, what caused you problems and how you overcame those issues.
+         *   If you believe you have a particularly sophisticated or original implementation, state why you think this is the case.
+         *   Carefully document all investigatory steps taken. If you found several ways to do something, stare why you chose the one you used.
+         *   Take care to document all testing steps take.
 
----++ Grading scheme
+## Grading scheme
+---
 
 The following three aspects will be assessed:
 
-   1 (60%) *Does it work?*
-      * Task 1 (20%)
-      * Task 2 (20%)
-      * Task 3 (20%)
-   1 (10%) *Is the code well written?*
-      * Marks awarded for:
-         * Clarity - Is it obvious where your changes are? Are they well commented?
-         * Modularity - Remember Pythons ability to include and extend existing classes.
-         * Giving credit to on-line resources you “borrowed" code segments from (if any).
-         * Evidence of original work (i.e. not simply having copied exisiting code).
-      * Marks deducted for:
-         * Not giving credit to on-line resources you “borrowed" code segments from.
-   1 (30%) *Did you understand what you were doing?*
-      * The code partially show this, but the report is where you convince me.
-      * Marks awarded for:
+1. (60%) **Does it work?**
+      *   Task 1 (20%)
+      *   Task 2 (20%)
+      *   Task 3 (20%)
+2. (10%) **Is the code well written?**
+      *   Marks awarded for:
+            * Clarity - Is it obvious where your changes are? Are they well commented?
+            * Modularity - Remember Pythons ability to include and extend existing classes.
+            * Giving credit to on-line resources you “borrowed" code segments from (if any).
+            * Evidence of original work (i.e. not simply having copied exisiting code).
+       *  Marks deducted for:
+           * Not giving credit to on-line resources you “borrowed" code segments from.
+3. (30%) **Did you understand what you were doing?**
+      *   The code partially show this, but the report is where you convince me.
+      *    Marks awarded for:
          * Clearly stating which tasks were achieved and which were not (and why).
          * Detail on how each task was tackled, what alternatives were considered and why a particular solution was chosen.
          * Description of development process.
