@@ -28,12 +28,12 @@ To configure and install your own copy of the VirtualBox appliance (virtual mach
 
 If you have troubles with ssh to guest VM from host machine, the following can help:
 
-   1 Add host-only network. In =File Menu->Preferences->Network= click on the "Host-only Networks" tab and than add a new host-only network (with default settings) by clicking on the =+= icon (you may already have a network called =vboxnet0=, in such a case you can skip this step).
+   1 Add host-only network. In `File Menu->Preferences->Network` click on the "Host-only Networks" tab and than add a new host-only network (with default settings) by clicking on the `+` icon (you may already have a network called `vboxnet0`, in such a case you can skip this step).
    1 Select your VM and go to the Settings tab. Go to Network->Adapter 1. Select the "Enable Adapter" box and attach it to "Host-only network" created at the step 1.
 
 -->
 
-Once imported, the user name is =nwen302= with a password of =nwen302=.
+Once imported, the user name is `nwen302` with a password of `nwen302`.
 
 Important directories include:
 
@@ -76,9 +76,9 @@ The controller is identified as c0 and connected through port 6653.
 ---
 
 **Before we start, please note the following:**
-   **$** preceeds Linux commands that should be typed at the shell prompt (as user nwen302),
-   **mininet>** preceeds Mininet commands that should be typed at Mininet’s CLI,
-   **#** preceeds Linux commands that are typed at a root shell prompt.
+   * `$` preceeds Linux commands that should be typed at the shell prompt (as user nwen302),
+   * `mininet>` preceeds Mininet commands that should be typed at Mininet’s CLI,
+   * `#` preceeds Linux commands that are typed at a root shell prompt.
 
 1. In the Virtual Machine, create the network with the following command:
 
@@ -154,7 +154,7 @@ Alternatively, you can also start the controller using ryu-manager:
 $ sudo ryu-manager /usr/local/lib/python2.7/dist-packages/ryu/app/simple_switch_13.py
 ```
 
-To get more detailed notifications about the controller stat you can add the =--verbose= option:
+To get more detailed notifications about the controller stat you can add the `--verbose` option:
 
 ```bash
 $ sudo ryu run /usr/local/lib/python2.7/dist-packages/ryu/app/simple_switch_13.py --verbose
@@ -172,7 +172,7 @@ Start mininet with remote controller:
 $ sudo mn --controller=remote --topo=single,3 --switch=ovsk,protocols=OpenFlow13 --mac
 ```
 
-With the optional argument =--controller=remote=, it defaults to =localhost:6653=. By the option =--switch=ovsk,protocols=OpenFlow13= we tell Mininet to use OpenFlow version 1.3. =--mac= will tell Mininet to create hosts with easily readable MAC addresses.
+With the optional argument `--controller=remote`, it defaults to `localhost:6653`. By the option `--switch=ovsk,protocols=OpenFlow13` we tell Mininet to use OpenFlow version 1.3. `--mac` will tell Mininet to create hosts with easily readable MAC addresses.
 
 ### All about flows
 ---
@@ -181,7 +181,7 @@ A flow is the finest grained work unit of a switch.
 
 In your VM emulated network environment there is a number of utilities enabling visibility into the network, its hosts, network devices and their flow tables. They can be especially useful for debugging by viewing flow state and flow counters. 
 
-Assuming you have already created an emulated network and connected it to a Ryu controller (as showed in previous section), in a separate terminal window (e.g. using =screen= or another `ssh` session) you can run the following commands.
+Assuming you have already created an emulated network and connected it to a Ryu controller (as showed in previous section), in a separate terminal window (e.g. using `screen` or another `ssh` session) you can run the following commands.
 
 To print a brief overview of the database contents (information about all the virtual switches):
 
@@ -221,9 +221,9 @@ $ man ovs-ofctl
 
 ### Developing RYU applications
 
-Ryu is written fully in python script. To develop your own aplication you can start with opening related files in the =.../ryu/app= folder with your favorite editor (which is vi) and edit them. Do not forget to restart ryu after making any changes.
+Ryu is written fully in python script. To develop your own aplication you can start with opening related files in the `.../ryu/app` folder with your favorite editor (which is vi) and edit them. Do not forget to restart ryu after making any changes.
 
-To get some ideas about developing applications you can start with [[http://ryu.readthedocs.io/en/latest/writing_ryu_app.html][this tutorial]].
+To get some ideas about developing applications you can start with [this tutorial](http://ryu.readthedocs.io/en/latest/writing_ryu_app.html).
 
 #### Packets with the RYU packet library
 ---
@@ -257,7 +257,7 @@ $ sudo ryu-manager sw.py
 
 **NOTE** 
 
-All the files in the =ryu= folder are created by the `root` user. When you make a copy with `sudo`, the owner will remain the `root` user. In this case, the copy cannot be edited by the user `nwen302`. It is better to change the file owner with the following command:
+All the files in the `ryu` folder are created by the `root` user. When you make a copy with `sudo`, the owner will remain the `root` user. In this case, the copy cannot be edited by the user `nwen302`. It is better to change the file owner with the following command:
 
 ```bash
 $sudo chown nwen302:nwen302 sw.py
@@ -310,7 +310,7 @@ Extend `simple_switch_13.py` to count all traffic going to and originating from 
 Extend `simple_switch_13.py` to combine Task 1 and Task 2 functionalities. Keep track of all traffic (count the number of packets) originating from each host. If the counter exceeds a specific number, block all the traffic originating from this host for 24 hours. The maximum packet count number should be configured through `MAX_COUNT` variable.
 
 <!--
-Create a rule in =simple_switch_13.py= that routes messages to the controller for topology maintenance.
+Create a rule in `simple_switch_13.py` that routes messages to the controller for topology maintenance.
 
 *HINT*: Ryu’s topology viewer uses [[http://en.wikipedia.org/wiki/Link_Layer_Discovery_Protocol][LLDP]] to visualize routes, you will need to create a simple database application to maintain routes and then trap LLDP messages to update the database. You may assume a single database and do not need to address any concurrency issues.
 
@@ -346,14 +346,14 @@ The following three aspects will be assessed:
             * Modularity - Remember Pythons ability to include and extend existing classes.
             * Giving credit to on-line resources you “borrowed" code segments from (if any).
             * Evidence of original work (i.e. not simply having copied exisiting code).
-       *  Marks deducted for:
+      *   Marks deducted for:
            * Not giving credit to on-line resources you “borrowed" code segments from.
 3. (30%) **Did you understand what you were doing?**
       *   The code partially show this, but the report is where you convince me.
-      *    Marks awarded for:
-         * Clearly stating which tasks were achieved and which were not (and why).
-         * Detail on how each task was tackled, what alternatives were considered and why a particular solution was chosen.
-         * Description of development process.
-         * Details of testing methodology - VERY IMPORTANT, provide lots of detail here, this is where the marks are!
-         * Observations of what was easy, what was hard, where problems arose, how they were overcome.
-         * Reflection of how you might improve or extend your solution.
+      *   Marks awarded for:
+           * Clearly stating which tasks were achieved and which were not (and why).
+           * Detail on how each task was tackled, what alternatives were considered and why a particular solution was chosen.
+           * Description of development process.
+           * Details of testing methodology - VERY IMPORTANT, provide lots of detail here, this is where the marks are!
+           * Observations of what was easy, what was hard, where problems arose, how they were overcome.
+           * Reflection of how you might improve or extend your solution.
