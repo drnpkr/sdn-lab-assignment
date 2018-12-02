@@ -229,6 +229,7 @@ $ man ovs-ofctl
 ```
 
 ### Developing RYU applications
+---
 
 Ryu is written fully in python script. To develop your own aplication you can start with opening related files in the `.../ryu/app` folder with your favorite editor (which is vi) and edit them. Do not forget to restart ryu after making any changes.
 
@@ -247,6 +248,8 @@ The `simple_switch_13.py` file is located in your virtual machine in the followi
 ```bash
 /usr/local/lib/python2.7/dist-packages/ryu/app
 ```
+
+This file can be also located in the [attachments directory](attachments/simple_switch_13.py). For the latest version of the file you can check [the official Ryu GitHub repository](https://github.com/osrg/ryu).
 
 Assuming you want to edit this file using your favorite text editor (definitely vi), you would enter
 
