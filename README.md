@@ -230,10 +230,10 @@ To get some ideas about developing applications you can start with [this tutoria
 
 Ryu also includes [packet parser library](http://ryu.readthedocs.io/en/latest/library_packet.html) **which may come in handy when working on the TASKS**.
 
-### The simple_switch_13.py file
+### The `simple_switch_13.py` file
 ---
 
-The *simple_switch_13.py* file is located in your virtual machine in the following folder:
+The `simple_switch_13.py` file is located in your virtual machine in the following folder:
 
 ```bash
 /usr/local/lib/python2.7/dist-packages/ryu/app
@@ -253,7 +253,7 @@ $ cp /usr/local/lib/python2.7/dist-packages/ryu/app/simple_switch_13.py ~/sw.py
 $ sudo ryu-manager sw.py
 ```
 
-**Keep track of which copy of the *simple_switch_13.py* you are editing since this is one of the files you will have to hand in.**
+**Keep track of which copy of the `simple_switch_13.py` you are editing since this is one of the files you will have to hand in.**
 
 **NOTE** 
 
@@ -265,7 +265,7 @@ $sudo chown nwen302:nwen302 sw.py
 
 But keep in mind that you will still need to run Ryu and Mininet using sudo.
 
-### Understanding simple_switch_13.py
+### Understanding `simple_switch_13.py`
 ---
 
 The simple switch keeps track of where the host with each MAC address is located and accordingly sends packets towards the destination and not flood all ports.
@@ -289,7 +289,7 @@ if { packet_in to switch }  {
 }
 ```
 
-A more detailed description of the *simple_switch_13.py* file can be found in the [RYU SDN FRAMEWORK for OpenFlow 1.3](https://osrg.github.io/ryu-book/en/Ryubook.pdf), in *Chapter 4*. 
+A more detailed description of the `simple_switch_13.py` file can be found in the [RYU SDN FRAMEWORK for OpenFlow 1.3](https://osrg.github.io/ryu-book/en/Ryubook.pdf), in *Chapter 4*. 
 
 ## Requirements
 ---
@@ -322,14 +322,14 @@ Please see the attachment "Topology_Discovery_with_Ryu.pdf" for more information
 ## What to hand in
 ---
 
-   * All relevant code. i.e. the modified *simple_switch_13.py* (if you haven't changed its name) and whatever new Python files you've created.
-         *   If you have "borrowed" code from on-line resources and/or other sources, say so in your code comments.
+   * All relevant code. i.e. the modified `simple_switch_13.py` (if you haven't changed its name) and whatever new Python files you've created.
+      *   If you have "borrowed" code from on-line resources and/or other sources, say so in your code comments.
    * A report (max 2,000 words, pictures are always good) describing your development process.
-         *   State which of the three tasks listed above you believe you have successfully implemented.
-         *   Reflect on what you found easy, what caused you problems and how you overcame those issues.
-         *   If you believe you have a particularly sophisticated or original implementation, state why you think this is the case.
-         *   Carefully document all investigatory steps taken. If you found several ways to do something, stare why you chose the one you used.
-         *   Take care to document all testing steps take.
+      *   State which of the three tasks listed above you believe you have successfully implemented.
+      *   Reflect on what you found easy, what caused you problems and how you overcame those issues.
+      *   If you believe you have a particularly sophisticated or original implementation, state why you think this is the case.
+      *   Carefully document all investigatory steps taken. If you found several ways to do something, stare why you chose the one you used.
+      *   Take care to document all testing steps take.
 
 ## Grading scheme
 ---
