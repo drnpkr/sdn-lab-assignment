@@ -1,19 +1,22 @@
-++ Introduction
+## Introduction
+---
 
 SDN is a new approach to the current world of networking, in this lab you will learn basic concepts of SDN through OpenFlow. OpenFlow started with several engineers from Stanford University creating a protocol that would have a logically centralised control plane separated from the underlying switching details. OpenFlow was architected for a number of devices containing only data planes to respond to commands sent to them from a logically centralised controller that housed the single control plane for that network. The controller is responsible for maintaining all of the network paths, as well as programming each of the network devices it controlled. The commands and responses to those commands are described in the OpenFlow protocol.
 
-++ Background reading
+## Background reading
+---
 
 Before starting this lab, read up on the technologies you will be using:
 
-   1 Get familiar with the SDN emulation environment, [Mininet](http://mininet.org/walkthrough/). (30 minutes – 1 hour)
-   1 Refresh your Python programming skills using the [Python Tutorial](http://docs.python.org/tutorial/). (1+ hour )
-   1 Study the [RYU Controller Tutorial](attachments/RYU-Controller-Tutorial.pdf). (~ 2 hours)
-      * [Pseudo-code.pdf](attachments/Pseudo-code.pdf)
-      * [Useful-mininet-setups.pdf](attachments/Useful-mininet-setups.pdf)
-      * **Note that sdnhub.org is not operable. All these documents have been fetched from web archive.**
+1. Get familiar with the SDN emulation environment, [Mininet](http://mininet.org/walkthrough/). (30 minutes – 1 hour)
+2. Refresh your Python programming skills using the [Python Tutorial](http://docs.python.org/tutorial/). (1+ hour )
+3. Study the [RYU Controller Tutorial](attachments/RYU-Controller-Tutorial.pdf). (~ 2 hours)
+      *   [Pseudo-code.pdf](attachments/Pseudo-code.pdf)
+      *   [Useful-mininet-setups.pdf](attachments/Useful-mininet-setups.pdf)
+      *    **Note that sdnhub.org is not operable. All these documents have been fetched from web archive.**
 
-++ Laboratory environment
+## Laboratory environment
+---
 
 In this lab, you will start by learning the basics of running Mininet in a VirtualBox virtual machine. Mininet facilitates creating and manipulating Software Defined Networking components.
 
@@ -58,7 +61,8 @@ Important directories include:
 
 `topology` : Code that performs topology discovery related to OpenFlow switches and handles associated information (e.g., ports, links etc). Internally uses LLDP protocol.
 
-+++ Network topology
+### Network topology
+---
 
 The topology has three hosts named h1, h2 and h3 respectively. Each host has an Ethernet interface called h1-eth0, h2-eth0 and h3-eth0 respectively. The three hosts are connected through a switch named s1.
 
@@ -68,7 +72,8 @@ The controller is identified as c0 and connected through port 6653.
 
 <img alt='Lab4.Topology.png' src='attachments/Lab4.Topology.png' align='center' title='Lab4.Topology.png' />
 
-+++ Creating a test emulated network
+### Creating a test emulated network
+---
 
 **Before we start, please note the following:**
 
@@ -93,7 +98,8 @@ mininet> dump
 
 You should be able to determine from the output if the network is indeed as in the topology diagram as shown above.
 
-++++ Accessing each host
+#### Accessing each host
+---
 
 1. To check the network interfaces on h1
 
@@ -114,7 +120,8 @@ mininet> h2 ping h1
 mininet> pingall
 ```
 
-++++ Housekeeping in mininet
+#### Housekeeping in mininet
+---
 
 To exit and clear devices
 
@@ -123,7 +130,8 @@ mininet> exit
 $ sudo mn -c
 ```
 
-+++ Creating the emulated network for the Lab - Connecting to Ryu Controller
+### Creating the emulated network for the Lab - Connecting to Ryu Controller
+---
 
 To ensure that no other controller is present:
 
@@ -168,6 +176,7 @@ $ sudo mn --controller=remote --topo=single,3 --switch=ovsk,protocols=OpenFlow13
 With the optional argument =--controller=remote=, it defaults to =localhost:6653=. By the option =--switch=ovsk,protocols=OpenFlow13= we tell Mininet to use OpenFlow version 1.3. =--mac= will tell Mininet to create hosts with easily readable MAC addresses.
 
 ---+++ All about flows
+---
 
 A flow is the finest grained work unit of a switch.
 
