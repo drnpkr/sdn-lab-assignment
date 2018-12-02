@@ -1,3 +1,7 @@
+# SDN Lab Assignment
+
+**Disclaimer:** This Lab Assignment was part of the NWEN302 Course (Computer Network Design) at the [School of Engineering and Computer Science](https://www.victoria.ac.nz/ecs), Victoria University of Wellington, New Zealand.
+
 ## Introduction
 ---
 
